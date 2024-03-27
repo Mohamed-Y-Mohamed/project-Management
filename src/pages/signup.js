@@ -13,7 +13,7 @@ import {
 import { auth,firestore } from '../components/firebase-config'; // Import the Firebase app instance
 import { doc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import "./style/login.css"
+import "./style/signup.css";
 
 function Signup() {
     const [formData, setFormData] = useState({

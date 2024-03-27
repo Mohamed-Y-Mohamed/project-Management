@@ -1,36 +1,39 @@
-.background-radial-gradient {
-   background-color: hsl(218, 41%, 15%);
-   background-image: radial-gradient(650px circle at 0% 0%,
-       hsl(218, 41%, 35%) 15%,
-       hsl(218, 41%, 30%) 35%,
-       hsl(218, 41%, 20%) 75%,
-       hsl(218, 41%, 19%) 80%,
-       transparent 100%),
-     radial-gradient(1250px circle at 100% 100%,
-       hsl(218, 41%, 45%) 15%,
-       hsl(218, 41%, 30%) 35%,
-       hsl(218, 41%, 20%) 75%,
-       hsl(218, 41%, 19%) 80%,
-       transparent 100%);
- }
+.background-radial-gradient1 {
+  background-color: hsl(218, 41%, 15%);
+  background-image: 
+    radial-gradient(650px circle at 0% 0%, 
+    hsl(218, 87%, 79%) 0%, 
+    hsl(218, 70%, 58%) 25%, 
+    hsl(218, 53%, 27%) 50%, 
+    hsl(218, 61%, 14%) 75%,  
+        transparent 100%),
+    radial-gradient(1250px circle at 100% 100%, 
+        hsl(189, 100%, 77%) 0%, 
+        hsl(182, 75%, 70%) 25%, 
+        hsl(192, 75%, 60%) 50%, 
+        hsl(165, 91%, 43%) 75%, 
+        transparent 100%);
+    
+}
  
- #radius-shape-1 {
-   height: 220px;
-   width: 220px;
-   top: -60px;
-   left: -130px;
-   background: radial-gradient(#44006b, #ad1fff);
+ #radius-shape-3 {
+   height: 260px;
+   width: 240px;
+   top: 60px;
+   left: 830px;
+   background: radial-gradient(#73cde9, #091fe4);
    overflow: hidden;
  }
  
- #radius-shape-2 {
+ #radius-shape-4{
    border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-   bottom: -60px;
-   right: -110px;
-   width: 300px;
+   bottom: 220px;
+   right:0px;
+   width: 250px;
    height: 300px;
-   background: radial-gradient(#44006b, #ad1fff);
+   background: radial-gradient(#73cde9, #091fe4);
    overflow: hidden;
+   
  }
  
  .bg-glass {

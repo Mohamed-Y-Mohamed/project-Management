@@ -1,7 +1,7 @@
 function Footer(){
 return(
 
-    <div className="custom-footer">
+    <div className="custom-footer" style={{marginTop:"5%"}}>
     <footer id="footer" className="footer">
         <div className="container-fluid footer-top">
             <div className="row gy-4">

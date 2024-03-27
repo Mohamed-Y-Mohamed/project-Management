@@ -1,59 +1,58 @@
+// registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx0QHxbf1x0ZFdMZVpbR39PIiBoS35RckVgW3lfdHFTQmBbWE10');
+
+
 import React, { useState } from 'react';
-import { extend,registerLicense } from '@syncfusion/ej2-base';
+import { extend, registerLicense } from '@syncfusion/ej2-base';
 import { KanbanComponent, ColumnsDirective, ColumnDirective } from "@syncfusion/ej2-react-kanban";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./style/kanban.css";
-import { kanbanData} from "../datasource";
- registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx0QHxbf1x0ZFdMZVpbR39PIiBoS35RckVgW3lfdHFTQmBbWE10');
+import { kanbanData } from "../datasource";
+
+// Replace 'Your_Syncfusion_License_Key' with your actual Syncfusion license key.
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx0QHxbf1x0ZFdMZVpbR39PIiBoS35RckVgW3lfdHFTQmBbWE10');
 
 function Kanban() {
     const initialData = extend([], kanbanData, null, true);
     const [data, setData] = useState(initialData);
     const [columns, setColumns] = useState([
-        { headerText: 'To Do', keyField: 'To Do', allowToggle: true },
-        { headerText: 'In Progress', keyField: 'InProgress', allowToggle: true },
-        { headerText: 'Review', keyField: 'Review', allowToggle: true },
-        { headerText: 'Completed', keyField: 'Completed', allowToggle: true }
+        { headerText: 'Open', keyField: 'Open', allowToggle: true },
+        { headerText: 'InProgress', keyField: 'InProgress', allowToggle: true },
+        { headerText: 'Testing', keyField: 'Testing', allowToggle: true },
+        { headerText: 'Close', keyField: 'Close', allowToggle: true },
+        { headerText: 'Validate', keyField: 'Validate', allowToggle: true }
     ]);
 
     const addNewCard = () => {
         const summary = prompt("Enter task summary:");
-        // Directly add to "To Do" if no status is provided
-        setData([...data, { Summary: summary, Status: 'To Do', Id: `Task${data.length + 1}` }]);
-    };
-
-    const addNewColumn = () => {
-        const headerText = prompt("Enter column name:");
-        // Simplify the addition process
-        if (headerText) {
-            setColumns([...columns, { headerText, keyField: headerText, allowToggle: true }]);
-            // Automatically add an example card to the new column
-            setData([...data, { Summary: `Example in ${headerText}`, Status: headerText, Id: `Task${data.length + 1}` }]);
-        }
-    };
-
-    const deleteColumn = () => {
-        const columnHeaderText = prompt("Enter the header text of the column you wish to delete:");
-        if (columnHeaderText) {
-            const updatedColumns = columns.filter(column => column.headerText !== columnHeaderText);
-            setColumns(updatedColumns);
-            const updatedData = data.filter(card => card.Status !== columnHeaderText);
-            setData(updatedData);
-        }
+        const newId = data.length + 1;
+        setData([...data, {
+            Id: newId, 
+            Status: 'Open', // Default status
+            Summary: summary, 
+            Type: 'Task', // Default type
+            Priority: 'Normal', // Default priority
+            Tags: '', // Default tags
+            Estimate: 0, // Default estimate
+            Assignee: '', // Default assignee
+            RankId: newId
+        }]);
     };
 
     const editCardDetails = (cardId) => {
-        // Find card by Id
         let card = data.find(card => card.Id === cardId);
         if (!card) return;
 
-        const summary = prompt("Edit task summary:", card.Summary);
-        const status = prompt("Edit task status:", card.Status);
+        const summary = prompt("Edit task summary:", card.Summary) || card.Summary;
+        const status = prompt("Edit task status:", card.Status) || card.Status;
+        const type = prompt("Edit task type:", card.Type) || card.Type;
+        const priority = prompt("Edit task priority:", card.Priority) || card.Priority;
+        const tags = prompt("Edit task tags:", card.Tags) || card.Tags;
+        const estimate = prompt("Edit task estimate:", card.Estimate) || card.Estimate;
+        const assignee = prompt("Edit task assignee:", card.Assignee) || card.Assignee;
 
-        // Update card details
         const updatedData = data.map(item => {
             if (item.Id === cardId) {
-                return { ...item, Summary: summary, Status: status };
+                return { ...item, Summary: summary, Status: status, Type: type, Priority: priority, Tags: tags, Estimate: estimate, Assignee: assignee };
             }
             return item;
         });
@@ -61,19 +60,12 @@ function Kanban() {
         setData(updatedData);
     };
 
-    // Example usage of editCardDetails. Adjust as necessary for your UI/event handlers.
-    // This is to show where you might trigger edits. In a real app, you'd likely trigger this
-    // from a card-specific action like clicking an "edit" button on the card.
-    // editCardDetails("Task1");
-       
-    
-
     return (
         <div className="App">
             <div className="kanban-toolbar" style={{ marginTop: "5%", marginBottom: '20px' }}>
-                <button onClick={addNewCard} className="btn btn-primary" style={{marginLeft:"20%", marginRight: '20%' }}>Add New Card</button>
-                <button onClick={addNewColumn} className="btn btn-success" style={{ marginRight: '20%' }}>Add New Column</button>
-                <button onClick={deleteColumn} className="btn btn-danger">Delete Column</button>
+                <button onClick={addNewCard} className="btn btn-primary" style={{ marginLeft: "20%", marginRight: '20%' }}>Add New Card</button>
+                <button onClick={() => {}} className="btn btn-success" style={{ marginRight: '20%' }}>Add New Column</button> {/* Placeholder for Add New Column */}
+                <button onClick={() => {}} className="btn btn-danger">Delete Column</button> {/* Placeholder for Delete Column */}
             </div>
             <KanbanComponent
                 id="kanban"
@@ -91,4 +83,5 @@ function Kanban() {
         </div>
     );
 }
+
 export default Kanban;
