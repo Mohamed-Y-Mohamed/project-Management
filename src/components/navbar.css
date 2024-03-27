@@ -1,6 +1,0 @@
-/* Ensure dropdown menus don't go outside the viewport */
-.dropdown-menu {
-    position: absolute;
-    transform: translateX(-20%);
-    right: 0;
-}

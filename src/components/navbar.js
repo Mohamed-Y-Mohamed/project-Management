@@ -1,104 +1,66 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is included
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Ensure FontAwesome is included
-import "./navbar.css";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+
 function Navbar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const [isNotificationsDropdownOpen, setIsNotificationsDropdownOpen] = useState(false);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+  const navigate = useNavigate(); // To programmatically navigate the user after sign out
 
-  // Toggle for the navbar collapse
-  const toggleNav = () => setIsNavExpanded(!isNavExpanded);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setIsUserSignedIn(!!user);
+    });
+    return () => unsubscribe();
+  }, []);
 
-  // Toggle for the notifications dropdown
-  const toggleNotificationsDropdown = () => setIsNotificationsDropdownOpen(!isNotificationsDropdownOpen);
-
-  // Toggle for the user dropdown
-  const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen);
+  const handleSignOut = () => {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      console.log("User signed out");
+      navigate('/'); // Optionally redirect to home page after sign out
+    }).catch((error) => {
+      console.error("Sign out error", error);
+    });
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={toggleNav}
-          aria-controls="navbarSupportedContent"
-          aria-expanded={isNavExpanded ? 'true' : 'false'}
-          aria-label="Toggle navigation"
-        >
-          <i className="fas fa-bars"></i>
-        </button>
+    <header className="header fixed-top d-flex align-items-center">
+      <div className="container-fluid d-flex align-items-center justify-content-between">
+        <Link to="/" className="logo d-flex align-items-center me-auto me-xl-0">
+          <h1>StreamLine<span>.</span></h1>
+        </Link>
 
-        <div className={`collapse navbar-collapse ${isNavExpanded ? 'show' : ''}`} id="navbarSupportedContent">
-          <a className="navbar-brand" href="#">
-            Brand
-          </a>
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <a className="nav-link" href="#">Dashboard</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Team</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Projects</a>
-            </li>
+        <nav id="navmenu" className={`navmenu ${isNavExpanded ? 'expanded' : ''}`}>
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/aboutus">About</Link></li>
+            <li><Link to="/contact-us">Contact Us</Link></li>
+            <li><Link to="/pricing">Pricing</Link></li>
           </ul>
-        </div>
 
-        <div className="d-flex align-items-center">
-          <div className={`dropdown ${isNotificationsDropdownOpen ? 'show' : ''}`}>
-            <a
-              className="link-secondary me-3 dropdown-toggle"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                toggleNotificationsDropdown();
-              }}
-              id="navbarDropdownMenuLink"
-              role="button"
-              aria-expanded={isNotificationsDropdownOpen ? 'true' : 'false'}
-            >
-              <i className="fas fa-bell"></i>
-              <span className="badge rounded-pill badge-notification bg-danger">1</span>
-            </a>
-            <ul className={`dropdown-menu ${isNotificationsDropdownOpen ? 'show' : ''}`} aria-labelledby="navbarDropdownMenuLink">
-              <li><a className="dropdown-item" href="#">Some news</a></li>
-              <li><a className="dropdown-item" href="#">Another news</a></li>
-              <li><a className="dropdown-item" href="#">Something else here</a></li>
+          <button className="mobile-nav-toggle d-xl-none" onClick={() => setIsNavExpanded(!isNavExpanded)}>
+            {isNavExpanded ? <i className="bi bi-x"></i> : <i className="bi bi-list"></i>}
+          </button>
+        </nav>
+
+        {isUserSignedIn ? (
+          <div className="dropdown">
+            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Account
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+              <li><hr className="dropdown-divider" /></li>
+              <li><button className="dropdown-item" onClick={handleSignOut}>Sign Out</button></li>
             </ul>
           </div>
-
-          <div className={`dropdown ${isUserDropdownOpen ? 'show' : ''}`} style={{paddingRight:"20%"}}>
-            <a
-              className="dropdown-toggle d-flex align-items-center"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                toggleUserDropdown();
-              }}
-              id="navbarDropdownMenuAvatar"
-              role="button"
-              aria-expanded={isUserDropdownOpen ? 'true' : 'false'}
-            >
-              <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                className="rounded-circle"
-                height="25"
-                alt="User"
-                loading="lazy"
-              />
-            </a>
-            <ul className={`dropdown-menu dropdown-menu-end ${isUserDropdownOpen ? 'show' : ''}`} aria-labelledby="navbarDropdownMenuAvatar" >
-              <li><a className="dropdown-item" href="#">My profile</a></li>
-              <li><a className="dropdown-item" href="#">Settings</a></li>
-              <li><a className="dropdown-item" href="#">Logout</a></li>
-            </ul>
-          </div>
-        </div>
+        ) : (
+          <Link className="btn-getstarted" to="/login">Get Started</Link>
+        )}
       </div>
-    </nav>
+    </header>
   );
 }
 

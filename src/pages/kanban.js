@@ -1,38 +1,12 @@
-// import React from 'react';
-// import './App.css';
-// import MyMap from './map';
-// function App() {
-//   const markers = [
-//     { latitude: 51.505, longitude: -0.09, description: 'Marker 1 Description' },
-//     { latitude: 51.515, longitude: -0.1, description: 'Marker 2 Description' },
-//     // Add more markers as needed
-//   ];
-
-//   return (
-//     <div className="App">
-//       <h1>Multiple Pins on Map</h1>
-//       <MyMap markers={markers} />
-//     </div>
-//   );
-
-
-//   }
-// export default App;
-
-
-// registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx0QHxbf1x0ZFdMZVpbR39PIiBoS35RckVgW3lfdHFTQmBbWE10');
-
-// Register your Syncfusion license
 import React, { useState } from 'react';
 import { extend,registerLicense } from '@syncfusion/ej2-base';
 import { KanbanComponent, ColumnsDirective, ColumnDirective } from "@syncfusion/ej2-react-kanban";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./App.css";
-import { kanbanData } from './datasource';
-import Navbar from './components/navbar';
+import "./style/kanban.css";
+import { kanbanData} from "../datasource";
  registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx0QHxbf1x0ZFdMZVpbR39PIiBoS35RckVgW3lfdHFTQmBbWE10');
 
-function App() {
+function Kanban() {
     const initialData = extend([], kanbanData, null, true);
     const [data, setData] = useState(initialData);
     const [columns, setColumns] = useState([
@@ -96,7 +70,6 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar />
             <div className="kanban-toolbar" style={{ marginTop: "5%", marginBottom: '20px' }}>
                 <button onClick={addNewCard} className="btn btn-primary" style={{marginLeft:"20%", marginRight: '20%' }}>Add New Card</button>
                 <button onClick={addNewColumn} className="btn btn-success" style={{ marginRight: '20%' }}>Add New Column</button>
@@ -118,5 +91,4 @@ function App() {
         </div>
     );
 }
-
-export default App;
+export default Kanban;
